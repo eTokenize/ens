@@ -18,7 +18,7 @@ contract ReverseRegistrar {
      * @param ensAddr The address of the ENS registry.
      * @param resolverAddr The address of the default reverse resolver.
      */
-    function ReverseRegistrar(ENS ensAddr, Resolver resolverAddr) public {
+    constructor (ENS ensAddr, Resolver resolverAddr) public {
         ens = ensAddr;
         defaultResolver = resolverAddr;
 
@@ -47,9 +47,9 @@ contract ReverseRegistrar {
      * @return The ENS node hash of the reverse record.
      */
     function claimWithResolver(address owner, address resolver) public returns (bytes32) {
-        var label = sha3HexAddress(msg.sender);
-        bytes32 node = keccak256(ADDR_REVERSE_NODE, label);
-        var currentOwner = ens.owner(node);
+        bytes32 label = sha3HexAddress(msg.sender);
+        bytes32 node = keccak256(abi.encodePacked(ADDR_REVERSE_NODE, label));
+        address currentOwner = ens.owner(node);
 
         // Update the resolver if required
         if (resolver != 0 && resolver != ens.resolver(node)) {
@@ -87,8 +87,8 @@ contract ReverseRegistrar {
      * @param addr The address to hash
      * @return The ENS node hash.
      */
-    function node(address addr) public view returns (bytes32) {
-        return keccak256(ADDR_REVERSE_NODE, sha3HexAddress(addr));
+    function node(address addr) public returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDR_REVERSE_NODE, sha3HexAddress(addr)));
     }
 
     /**
@@ -99,7 +99,8 @@ contract ReverseRegistrar {
      *         input address.
      */
     function sha3HexAddress(address addr) private returns (bytes32 ret) {
-        addr; ret; // Stop warning us about unused variables
+        addr;
+        ret; // Stop warning us about unused variables
         assembly {
             let lookup := 0x3031323334353637383961626364656600000000000000000000000000000000
             let i := 40
