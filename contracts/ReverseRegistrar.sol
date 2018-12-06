@@ -104,15 +104,30 @@ contract ReverseRegistrar {
         assembly {
             let lookup := 0x3031323334353637383961626364656600000000000000000000000000000000
             let i := 40
-        loop:
+            for {} gt(i, 0) {} {
             i := sub(i, 1)
             mstore8(i, byte(and(addr, 0xf), lookup))
             addr := div(addr, 0x10)
             i := sub(i, 1)
             mstore8(i, byte(and(addr, 0xf), lookup))
             addr := div(addr, 0x10)
-            jumpi(loop, i)
+            }
             ret := keccak256(0, 40)
         }
+
+        /* assembly { */
+        /*     let lookup := 0x3031323334353637383961626364656600000000000000000000000000000000 */
+        /*     let i := 40 */
+        /* loop: */
+        /*     i := sub(i, 1) */
+        /*     mstore8(i, byte(and(addr, 0xf), lookup)) */
+        /*     addr := div(addr, 0x10) */
+        /*     i := sub(i, 1) */
+        /*     mstore8(i, byte(and(addr, 0xf), lookup)) */
+        /*     addr := div(addr, 0x10) */
+        /*     jumpi(loop, i) */
+        /*     ret := keccak256(0, 40) */
+        /* } */
+
     }
 }
