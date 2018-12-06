@@ -87,7 +87,7 @@ contract ReverseRegistrar {
      * @param addr The address to hash
      * @return The ENS node hash.
      */
-    function node(address addr) public returns (bytes32) {
+    function node(address addr) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(ADDR_REVERSE_NODE, sha3HexAddress(addr)));
     }
 
