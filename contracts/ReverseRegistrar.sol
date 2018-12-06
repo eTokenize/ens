@@ -98,7 +98,7 @@ contract ReverseRegistrar {
      * @return The SHA3 hash of the lower-case hexadecimal encoding of the
      *         input address.
      */
-    function sha3HexAddress(address addr) private returns (bytes32 ret) {
+    function sha3HexAddress(address addr) private pure returns (bytes32 ret) {
         addr;
         ret; // Stop warning us about unused variables
         assembly {
